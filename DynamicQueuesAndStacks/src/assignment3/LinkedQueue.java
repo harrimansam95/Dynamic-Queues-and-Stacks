@@ -11,11 +11,13 @@ package assignment3;
  */
 public class LinkedQueue {
 
-    private Node head, tail;
+    private Node head, tail, temp;
     private int qSize;
 
     public LinkedQueue() {
-        head = tail = null;
+        head = null;
+        tail = null;
+        temp = null;
         qSize = 0;
     }
 
@@ -60,11 +62,30 @@ public class LinkedQueue {
 
     }
 
-    public Object get() {
-        Object obj;
-        obj = head.getElement();
-        head = head.getNext();
-        return obj;
+    public String get() {
+        Node tempHead = head;
+        String queue = "";
+        int size = qSize;
+        if(isEmpty() || size == 0){
+          throw new QueueEmptyException("Queue is Empty");  
+        }
+        else{
+            while(size >0 ){
+                queue += tempHead.getElement() + " ,";
+                tempHead = tempHead.getNext();
+                size--;
+            }
+            return queue;
+        }
+     
+    }
+    public String getCurrent() {
+        Node temp = head;
+        String tempQueue= "";
+        tempQueue += temp.getElement();
+        temp = temp.getNext();
+        return tempQueue;
+     
     }
 
     public class QueueEmptyException extends RuntimeException {
@@ -96,14 +117,11 @@ public class LinkedQueue {
         if (qSize == 0) {
             throw new QueueEmptyException("Queue is empty.");
         } else {
-            obj = head.getNext();
+            obj = tail.getElement();
             
             qSize--;
         }
-        if (qSize == 0) {
-            tail = null; // the queue is now empty
-            
-        }
+        
         return obj;
     }
 
@@ -114,6 +132,7 @@ public class LinkedQueue {
         node.setNext(null);     	// node will be new tail node
         if (qSize == 0) {
             head = node;      	 // empty queue
+            temp = head;
         } else {
             tail.setNext(node); // add node at the tail of the list
         }

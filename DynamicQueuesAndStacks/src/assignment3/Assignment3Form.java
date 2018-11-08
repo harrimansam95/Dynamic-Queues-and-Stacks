@@ -12,6 +12,7 @@ package assignment3;
 public class Assignment3Form extends javax.swing.JFrame {
 
     LinkedQueue queue = new LinkedQueue();
+    LinkedStack stack = new LinkedStack();
 
     /**
      * Creates new form Assignment3Form
@@ -70,6 +71,11 @@ public class Assignment3Form extends javax.swing.JFrame {
         jPanel1.add(addData);
 
         reverseData.setText("reverse the data inside the queue ");
+        reverseData.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reverseDataActionPerformed(evt);
+            }
+        });
         jPanel1.add(reverseData);
 
         removeData.setText("remove data from the output end of the queue ");
@@ -81,6 +87,11 @@ public class Assignment3Form extends javax.swing.JFrame {
         jPanel1.add(removeData);
 
         exit.setText("Exit");
+        exit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exitActionPerformed(evt);
+            }
+        });
         jPanel1.add(exit);
 
         output.setEditable(false);
@@ -128,24 +139,49 @@ public class Assignment3Form extends javax.swing.JFrame {
     private void addDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addDataActionPerformed
         queue.append(input.getText());
         output.setText(output.getText() + "\n'" + input.getText() + "' added.");
+        input.setText("");
     }//GEN-LAST:event_addDataActionPerformed
 
     private void removeDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeDataActionPerformed
         if (queue.getTail() != null) {
-            output.setText(output.getText() + "\n'" + queue.getTail() + "' removed.");
-            queue.serveTail();
+            output.setText(output.getText() + "\n'" + queue.getCurrent()+ "' removed.");
+            queue.serve();
         } else {
             output.setText(output.getText() + "\n Queue is empty, nothing to clear: No action performed.");
         }
     }//GEN-LAST:event_removeDataActionPerformed
 
     private void printActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printActionPerformed
-        output.setText(output.getText() + "\n Contents of queue: ");
-        for(int i = 0; i < queue.size(); i++){
-            output.setText(output.getText() + queue.get() + ", ");
+        if(queue.size() > 0){
             
+        output.setText(output.getText() + "\n Contents of queue: ");
+       
+            output.setText(output.getText() + queue.get());
+            
+        
+        }
+        else{
+            output.setText(output.getText() +  "\n Queue is empty, nothing to print."); 
         }
     }//GEN-LAST:event_printActionPerformed
+
+    private void exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_exitActionPerformed
+
+    private void reverseDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reverseDataActionPerformed
+        String result;
+        if(queue.isEmpty()){
+            output.setText(output.getText() + "\n Queue is empty, nothing to reverse.");
+        }
+        while (queue.size() > 0){
+            stack.push(queue.serve());
+        }
+        while (stack.size() > 0){
+            queue.append(stack.pop());
+        }
+        output.setText(output.getText() + "\n" +  queue.get());
+    }//GEN-LAST:event_reverseDataActionPerformed
 
     /**
      * @param args the command line arguments
